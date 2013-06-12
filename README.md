@@ -11,3 +11,8 @@ A generator for Yeoman.
 
 ## License
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
+
+## Todo
+
+- `yo laravel` => show help
+- `yo laravel:install` => install a new laravel setup (clean all file)
