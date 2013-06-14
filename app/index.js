@@ -33,7 +33,7 @@ LaravelGenerator.prototype.askFor = function askFor() {
     console.log(welcome);
 
     var help = '\n Command : '.cyan+
-               '\n    -'.white+' laravel:install'.cyan+' : Install a new version of laravel4'.white;
+               '\n    -'.white+' laravel:install'.cyan+' : Install a new version of laravel4 (clean all current) '.white;
     console.log(help);
 };
 
