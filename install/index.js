@@ -9,6 +9,7 @@ var yeoman = require('yeoman-generator');
 var InstallGenerator = module.exports = function InstallGenerator(args, options, config) {
     // By calling `NamedBase` here, we get the argument to the subgenerator call
     // as `this.name`.
+    if (!args.length) { args[0] = './'; }
     yeoman.generators.NamedBase.apply(this, arguments);
 
 
@@ -17,7 +18,7 @@ var InstallGenerator = module.exports = function InstallGenerator(args, options,
     } else {
         this.verbose = false;
     }
-    this.name = typeof this.name === 'undefined' ? './' : this.name;
+
     // TODO :: check last char is /
     this.destinationRoot(this.name);
     this.composer = false;
