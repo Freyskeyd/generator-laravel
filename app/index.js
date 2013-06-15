@@ -21,19 +21,18 @@ LaravelGenerator.prototype.askFor = function askFor() {
 
   // welcome message
     var welcome =
-  '\n   ____'.red+
-  '\n   \\   \\            '.red+'       _____________________'+
-  '\n    \\   \\      ____ '.red+'      |  Laravel tools      |'+
-  '\n     \\   \\     \\   \\ '.red+'     |                     |'+
-  '\n      \\___\\_____\\___\\'.red+'     |_____________________|'+
-  '\n            \\     \\'.red+
+  '\n   ____'.red +
+  '\n   \\   \\            '.red + '       _____________________' +
+  '\n    \\   \\      ____ '.red + '      |  Laravel tools      |' +
+  '\n     \\   \\     \\   \\ '.red + '     |                     |' +
+  '\n      \\___\\_____\\___\\'.red + '     |_____________________|' +
+  '\n            \\     \\'.red +
   '\n             \\_____\\'.red;
-                                                                                          
 
     console.log(welcome);
 
-    var help = '\n Command : '.cyan+
-               '\n    -'.white+' laravel:install'.cyan+' : Install a new version of laravel4 (clean all current) '.white;
+    var help = '\n Command : '.cyan +
+               '\n    -'.white + ' laravel:install'.cyan + ' : Install a new version of laravel4 (clean all current) '.white;
     console.log(help);
 };
 
