@@ -9,7 +9,7 @@ var yeoman = require('yeoman-generator');
 var InstallGenerator = module.exports = function InstallGenerator(args, options, config) {
     // By calling `NamedBase` here, we get the argument to the subgenerator call
     // as `this.name`.
-    yeoman.generators.Base.apply(this, arguments);
+    yeoman.generators.NamedBase.apply(this, arguments);
 
 
     if (options.hasOwnProperty('verbose') && options.verbose) {
