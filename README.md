@@ -1,5 +1,5 @@
 # Generator-laravel
-[![Build Status](https://secure.travis-ci.org/Freyskeyd/generator-laravel.png?branch=master)](https://travis-ci.org/Freyskeyd/generator-laravel)
+[![Build Status](https://secure.travis-ci.org/Freyskeyd/generator-laravel.png?branch=unstable)](https://travis-ci.org/Freyskeyd/generator-laravel)
 
 A generator for Yeoman.
 
