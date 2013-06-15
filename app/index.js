@@ -34,16 +34,3 @@ LaravelGenerator.prototype.askFor = function askFor() {
                '\n    -'.white + ' laravel:install'.cyan + ' : Install a new version of laravel4 (clean all current) '.white;
     console.log(help);
 };
-
-LaravelGenerator.prototype.app = function app() {
-    this.mkdir('app');
-    this.mkdir('app/templates');
-
-    this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
-};
-
-LaravelGenerator.prototype.projectfiles = function projectfiles() {
-    this.copy('editorconfig', '.editorconfig');
-    this.copy('jshintrc', '.jshintrc');
-};
