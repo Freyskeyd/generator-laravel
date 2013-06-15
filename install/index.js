@@ -130,7 +130,6 @@ InstallGenerator.prototype.checkComposer = function checkComposer() {
 };
 
 InstallGenerator.prototype.installComposer = function installComposer() {
-    var cb = this.async();
 
     if (this.composer) {
         var composer = spawn('composer', ['create-project', 'laravel/laravel', this.name], {killSignal: 'SIGINT'}),

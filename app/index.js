@@ -17,7 +17,6 @@ var LaravelGenerator = module.exports = function LaravelGenerator(args, options,
 util.inherits(LaravelGenerator, yeoman.generators.Base);
 
 LaravelGenerator.prototype.askFor = function askFor() {
-    var cb = this.async();
 
   // welcome message
     var welcome =

@@ -1,28 +1,33 @@
 {
   "name": "generator-laravel",
-  "version": "0.0.1",
-  "description": "A generator for laravel (with Yeoman)",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "rimraf": "~2.1.4",
-    "yeoman-generator": "~0.12.0"
-  },
-  "devDependencies": {
-    "mocha": "~1.9.0"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
+  "version": "0.1.0",
+  "description": "A generator for Laravel (with Yeoman)",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "homepage": "https://github.com/Freyskeyd/generator-laravel",
+  "bugs": "https://github.com/Freyskeyd/generator-laravel/issues",
+  "author": "Simon Paitrault <contact@freyskeyd.fr> (https://github.com/Freyskeyd)",
+  "main": "app/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/Freyskeyd/generator-laravel.git"
   },
-  "keywords": [
-    "laravel"
-  ],
-  "author": "Simon Paitrault <contact@freyskeyd.fr> (https://github.com/Freyskeyd)",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "yeoman-generator": "~0.12.0",
+    "rimraf": "~2.1.4"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "directories": {
+    "test": "test"
+  },
   "license": "MIT"
 }
