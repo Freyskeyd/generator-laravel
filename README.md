@@ -9,10 +9,17 @@ A generator for Yeoman.
 - Install the generator: `npm install -g generator-laravel`
 - Run: `yo laravel`
 
-## License
-[MIT License](http://en.wikipedia.org/wiki/MIT_License)
-
 ## Todo
 
 - `yo laravel` => show help
-- `yo laravel:install` => install a new laravel setup (clean all file)
+- `yo laravel:doctor` => Control/fix bug or issue in the folder
+- `yo laravel:install [DIRECTORY] [OPTIONS]` => install a new laravel setup.
+- `yo laravel:prepare [DIRECTORY] [OPTIONS]` => prepare laravel to deploy
+- `yo laravel:migrate [DIRECTORY] [OPTIONS]` => run migration
+- `yo laravel:down [DIRECTORY] [OPTIONS]`    => run artisan down command
+- `yo laravel:up [DIRECTORY] [OPTIONS]`      => run artisan up command
+
+
+## License
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)
+
