@@ -5,14 +5,21 @@ var yeoman = require('yeoman-generator');
 var DoctorGenerator = module.exports = function DoctorGenerator(args, options, config) {
     // By calling `NamedBase` here, we get the argument to the subgenerator call
     // as `this.name`.
+
+
     yeoman.generators.Base.apply(this, arguments);
+    this.options
+    /**
+     * Arguments
+     */
+    this.argument('group', { type: String, required: false });
+    this.argument('name', { type: String, required: false });
 
     if (options.hasOwnProperty('verbose') && options.verbose) {
         this.verbose = true;
     } else {
         this.verbose = false;
     }
-
 
     this.composer = false;
 
