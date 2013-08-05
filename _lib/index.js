@@ -1,17 +1,16 @@
 'use strict';
 
 var fs = require('fs'),
-path = require('path'),
-root = path.join(path.dirname(fs.realpathSync(__filename)), '..', '/'),
-cfgFile = path.join(root, '.yolara'),
-cfgObject = {};
+    path = require('path'),
+    root = path.join(path.dirname(fs.realpathSync(__filename)), '..', '/'),
+    cfgFile = path.join(root, '.yolara'),
+    cfgObject = {};
 
 /**
 * Constructor
 */
-var LaravelCFG = function () {
+var LaravelCFG = function () {};
 
-};
 /**
 * Do Some initialisation on system
 * Get/Create cfg file
@@ -31,6 +30,8 @@ LaravelCFG.prototype.init = function () {
         this.readCFGFile();
     }
 };
+
+// ================================ Config File START ===============================
 
 /**
 * Read CFG File
@@ -62,7 +63,21 @@ LaravelCFG.prototype.openCFGFile = function (callback) {
 * Set default CFG in config file
 * @return Object Config
 */
-LaravelCFG.prototype.setDefaultCFG = function () {
+LaravelCFG.prototype.setDefaultCFG = function () {};
 
-};
+/**
+ * Write into CFG file
+ */
+LaravelCFG.prototype.writeCFG = function () {};
+
+// ================================ Config File STOP ================================
+
+// ================================ Pool START ======================================
+LaravelCFG.prototype.poolList         = function () {};
+LaravelCFG.prototype.addPathToPool    = function () {};
+LaravelCFG.prototype.removePathToPool = function () {};
+LaravelCFG.prototype.addPoolToPool    = function () {};
+LaravelCFG.prototype.poolByName       = function () {};
+// ================================ Pool STOP =======================================
+
 module.exports = LaravelCFG;
