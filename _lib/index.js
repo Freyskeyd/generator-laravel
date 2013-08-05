@@ -3,13 +3,26 @@
 var fs = require('fs'),
     path = require('path'),
     root = path.join(path.dirname(fs.realpathSync(__filename)), '..', '/'),
-    cfgFile = path.join(root, '.yolara'),
-    cfgObject = {};
+    cfgFile = path.join(root, '.yolara');
+
+function removeA(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
 
 /**
 * Constructor
 */
-var LaravelCFG = function () {};
+var LaravelCFG = function () {
+    this.cfgObject  = {};
+    this.isInit     = false;
+};
 
 /**
 * Do Some initialisation on system
@@ -17,17 +30,22 @@ var LaravelCFG = function () {};
 * Unix Support only
 * @return null
 */
-LaravelCFG.prototype.init = function () {
+LaravelCFG.prototype.init = function (done) {
 
     if (!fs.existsSync(cfgFile)) {
         console.log('LaravelCFG :: config file dosn\'t exists');
 
         this.openCFGFile(function (fd) {
-            this.setDefaultCFG(fd);
+
+            this.setDefaultCFG(fd, function () {
+
+                this.readCFGFile(done);
+                done();
+            });
         });
 
     } else {
-        this.readCFGFile();
+        this.readCFGFile(done);
     }
 };
 
@@ -36,13 +54,18 @@ LaravelCFG.prototype.init = function () {
 /**
 * Read CFG File
 */
-LaravelCFG.prototype.readCFGFile = function () {
+LaravelCFG.prototype.readCFGFile = function (done) {
     var self = this;
     fs.readFile(cfgFile, 'utf8', function (err, buffer) {
         if (err) { throw err; }
         var data = buffer.toString('utf8');
         if (!data.length) {
-            cfgObject = self.setDefaultCFG();
+            self.cfgObject  = JSON.parse(self.setDefaultCFG(done));
+            self.isInit     = true;
+        } else {
+            self.cfgObject  = JSON.parse(data);
+            self.isInit     = true;
+            done();
         }
     });
 };
@@ -63,21 +86,42 @@ LaravelCFG.prototype.openCFGFile = function (callback) {
 * Set default CFG in config file
 * @return Object Config
 */
-LaravelCFG.prototype.setDefaultCFG = function () {};
+LaravelCFG.prototype.setDefaultCFG = function (done) {
+    this.cfgObject.lastUpdate   = new Date().getTime();
+    this.cfgObject.author       = 'Simon PAITRAULT';
+
+    this.writeCFG(done);
+};
 
 /**
  * Write into CFG file
  */
-LaravelCFG.prototype.writeCFG = function () {};
+LaravelCFG.prototype.writeCFG = function (done) {
+    var self = this;
+
+    fs.writeFile(cfgFile, JSON.stringify(this.cfgObject, null, 4), function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            done.call(self);
+        }
+    });
+};
+
+LaravelCFG.prototype.getCFG     = function () {return this.cfgObject; };
+LaravelCFG.prototype.saveCFG    = function (callback) { this.writeCFG(callback); };
 
 // ================================ Config File STOP ================================
 
 // ================================ Pool START ======================================
-LaravelCFG.prototype.poolList         = function () {};
-LaravelCFG.prototype.addPathToPool    = function () {};
-LaravelCFG.prototype.removePathToPool = function () {};
-LaravelCFG.prototype.addPoolToPool    = function () {};
-LaravelCFG.prototype.poolByName       = function () {};
+LaravelCFG.prototype.poolList         = function () {
+    return this.isInit ? this.cfgObject.pool : null;
+};
+
+LaravelCFG.prototype.addPathToPool      = function (path, pool) {};
+LaravelCFG.prototype.removePathFromPool = function (path, pool) {};
+LaravelCFG.prototype.addPoolToPool      = function () {};
+LaravelCFG.prototype.poolByName         = function () {};
 // ================================ Pool STOP =======================================
 
 module.exports = LaravelCFG;
