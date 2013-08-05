@@ -37,10 +37,8 @@ LaravelCFG.prototype.init = function (done) {
 
         this.openCFGFile(function (fd) {
 
-            this.setDefaultCFG(fd, function () {
-
+            this.setDefaultCFG( function () {
                 this.readCFGFile(done);
-                done();
             });
         });
 
