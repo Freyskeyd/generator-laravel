@@ -5,16 +5,6 @@ var fs = require('fs'),
     root = path.join(path.dirname(fs.realpathSync(__filename)), '..', '/'),
     cfgFile = path.join(root, '.yolara');
 
-function removeA(arr) {
-    var what, a = arguments, L = a.length, ax;
-    while (L > 1 && arr.length) {
-        what = a[--L];
-        while ((ax= arr.indexOf(what)) !== -1) {
-            arr.splice(ax, 1);
-        }
-    }
-    return arr;
-}
 
 /**
 * Constructor
@@ -35,9 +25,9 @@ LaravelCFG.prototype.init = function (done) {
     if (!fs.existsSync(cfgFile)) {
         console.log('LaravelCFG :: config file dosn\'t exists');
 
-        this.openCFGFile(function (fd) {
+        this.openCFGFile(function () {
 
-            this.setDefaultCFG( function () {
+            this.setDefaultCFG(function () {
                 this.readCFGFile(done);
             });
         });
@@ -116,10 +106,12 @@ LaravelCFG.prototype.poolList         = function () {
     return this.isInit ? this.cfgObject.pool : null;
 };
 
-LaravelCFG.prototype.addPathToPool      = function (path, pool) {};
-LaravelCFG.prototype.removePathFromPool = function (path, pool) {};
+LaravelCFG.prototype.addPathToPool      = function () {};
+LaravelCFG.prototype.removePathFromPool = function () {};
 LaravelCFG.prototype.addPoolToPool      = function () {};
 LaravelCFG.prototype.poolByName         = function () {};
+LaravelCFG.prototype.pathByName         = function () {};
+
 // ================================ Pool STOP =======================================
 
 module.exports = LaravelCFG;
