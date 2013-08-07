@@ -1,8 +1,10 @@
+/*jshint es5:false, bitwise: true */
 'use strict';
 
 var fs = require('fs'),
     path = require('path'),
-    root = path.join(path.dirname(fs.realpathSync(__filename)), '..', '/'),
+    utils = require('./utils'),
+    root = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE,
     cfgFile = path.join(root, '.yolara');
 
 
@@ -106,7 +108,33 @@ LaravelCFG.prototype.poolList         = function () {
     return this.isInit ? this.cfgObject.pool : null;
 };
 
-LaravelCFG.prototype.addPathToPool      = function () {};
+LaravelCFG.prototype.addPathToPool      = function (_path, name, poolpath) {
+    // decompose poolpath
+    poolpath       = poolpath.split('/');
+
+    if (process.platform !== 'win32' && ~_path.indexOf('\\')) {
+        console.log('Not on a win32 OS');
+        return false;
+    }
+    if (process.platform === 'win32' && ~_path.indexOf('/')) {
+        console.log('Not on a UNIX OS');
+        return false;
+    }
+
+    // decompose _path
+    _path = _path.split(path.sep);
+
+    console.log(_path);
+    // var loopNumber = poolpath.length;
+
+    // if (typeof this.cfgObject.pool === 'undefined') { this.cfgObject.pool = {}; }
+
+    // var copyPool = utils.clone(this.cfgObject.pool);
+
+    // for (var i = 0; i < loopNumber; i++) {
+    //     console.log(poolpath[i]);
+    // }
+};
 LaravelCFG.prototype.removePathFromPool = function () {};
 LaravelCFG.prototype.addPoolToPool      = function () {};
 LaravelCFG.prototype.poolByName         = function () {};
