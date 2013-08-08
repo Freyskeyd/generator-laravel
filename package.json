@@ -7,7 +7,7 @@
   ],
   "homepage": "https://github.com/Freyskeyd/generator-laravel",
   "bugs": "https://github.com/Freyskeyd/generator-laravel/issues",
-  "author": "Simon Paitrault <contact@freyskeyd.fr> (https://github.com/Freyskeyd)",
+  "author": "Simon PAITRAULT <contact@freyskeyd.fr> (https://github.com/Freyskeyd)",
   "main": "app/index.js",
   "repository": {
     "type": "git",
