@@ -3,7 +3,7 @@
 
 var fs = require('fs'),
     path = require('path'),
-    utils = require('./utils'),
+    _un = require('underscore-contrib'),
     root = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE,
     cfgFile = path.join(root, '.yolara');
 
@@ -12,8 +12,9 @@ var fs = require('fs'),
 * Constructor
 */
 var LaravelCFG = function () {
-    this.cfgObject  = {};
-    this.isInit     = false;
+    this.cfgObject = {};
+    this.isInit    = false;
+    this.unix      = process.platform !== 'win32';
 };
 
 /**
@@ -89,13 +90,8 @@ LaravelCFG.prototype.setDefaultCFG = function (done) {
 LaravelCFG.prototype.writeCFG = function (done) {
     var self = this;
 
-    fs.writeFile(cfgFile, JSON.stringify(this.cfgObject, null, 4), function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            done.call(self);
-        }
-    });
+    fs.writeFileSync(cfgFile, JSON.stringify(this.cfgObject, null, 4));
+    done.call(self);
 };
 
 LaravelCFG.prototype.getCFG     = function () {return this.cfgObject; };
@@ -104,41 +100,98 @@ LaravelCFG.prototype.saveCFG    = function (callback) { this.writeCFG(callback);
 // ================================ Config File STOP ================================
 
 // ================================ Pool START ======================================
+LaravelCFG.prototype.initPool = function () {
+    if (typeof this.cfgObject.pool === 'undefined') {
+        this.cfgObject.pool = {};
+    }
+};
+
 LaravelCFG.prototype.poolList         = function () {
     return this.isInit ? this.cfgObject.pool : null;
 };
 
 LaravelCFG.prototype.addPathToPool      = function (_path, name, poolpath) {
     // decompose poolpath
-    poolpath       = poolpath.split('/');
+    if (poolpath !== '') {
+        poolpath       = poolpath.split('/');
+    }
 
-    if (process.platform !== 'win32' && ~_path.indexOf('\\')) {
+    if (this.unix && ~_path.indexOf('\\')) {
         console.log('Not on a win32 OS');
         return false;
     }
-    if (process.platform === 'win32' && ~_path.indexOf('/')) {
+    if (!this.unix && ~_path.indexOf('/')) {
         console.log('Not on a UNIX OS');
         return false;
+    }
+    if (this.unix) {
+        _path = _path.replace('~', process.env.HOME);
     }
 
     // decompose _path
     _path = _path.split(path.sep);
 
-    console.log(_path);
-    // var loopNumber = poolpath.length;
+    // if unix keep first /
+    if (this.unix) {
+        _path[0] = (_path[0] !== '' ? _path[0] : _path[0] = path.sep);
+        if (_path[0] !== path.sep) {
 
-    // if (typeof this.cfgObject.pool === 'undefined') { this.cfgObject.pool = {}; }
+            var sub = process.cwd().split(path.sep);
+            for (var i = sub.length - 1; i >= 0; i--) {
+                _path.unshift(sub[i]);
+            }
+            if (_path[0] !== path.sep) {
+                _path[0] = path.sep;
+            }
+        }
+    }
 
-    // var copyPool = utils.clone(this.cfgObject.pool);
+    if (typeof poolpath === 'string') {
+        if (poolpath === '') {
+            poolpath = name;
+        } else {
+            poolpath += '/' + name;
+            poolpath = poolpath.split('/');
+        }
+    } else {
+        poolpath.push(name);
+    }
 
-    // for (var i = 0; i < loopNumber; i++) {
-    //     console.log(poolpath[i]);
-    // }
+    // Update pool
+    this.initPool();
+    this.cfgObject.pool = _un.setPath(this.cfgObject.pool, _path, poolpath, {});
+    this.saveCFG(function () {});
+
 };
-LaravelCFG.prototype.removePathFromPool = function () {};
+LaravelCFG.prototype.removePathFromPool = function (pathName, poolpath) {
+    poolpath = poolpath.split('/');
+
+    var obj = _un.getPath(this.cfgObject.pool, poolpath);
+
+    if (typeof obj !== 'undefined') {
+        if (obj.hasOwnProperty(pathName)) {
+            delete obj[pathName];
+            _un.setPath(this.cfgObject.pool, obj, poolpath);
+            this.saveCFG(function () {});
+        }
+    }
+};
 LaravelCFG.prototype.addPoolToPool      = function () {};
-LaravelCFG.prototype.poolByName         = function () {};
-LaravelCFG.prototype.pathByName         = function () {};
+
+LaravelCFG.prototype.poolByName         = function (name) {
+    return _un.getPath(this.cfgObject.pool, name.split('/'));
+};
+
+LaravelCFG.prototype.pathByName         = function (name, pool) {
+    var poolpath;
+    if (typeof pool === 'string' && pool === '') {
+        poolpath = [];
+    } else {
+        poolpath = pool.split('/');
+    }
+    poolpath.push(name);
+    return _un.getPath(this.cfgObject.pool, poolpath);
+};
 
 // ================================ Pool STOP =======================================
 
