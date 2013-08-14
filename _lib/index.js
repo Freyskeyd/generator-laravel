@@ -100,16 +100,30 @@ LaravelCFG.prototype.saveCFG    = function (callback) { this.writeCFG(callback);
 // ================================ Config File STOP ================================
 
 // ================================ Pool START ======================================
+/**
+ * If the pool object isn't init
+ * @return void
+ */
 LaravelCFG.prototype.initPool = function () {
     if (typeof this.cfgObject.pool === 'undefined') {
         this.cfgObject.pool = {};
     }
 };
 
+/**
+ * return the pool or null
+ * @return {Object | null}
+ */
 LaravelCFG.prototype.poolList         = function () {
     return this.isInit ? this.cfgObject.pool : null;
 };
 
+/**
+ * Add a path to a pool
+ * @param {String} _path    path to add
+ * @param {String} name     the name of the path
+ * @param {String} poolpath path to the destination pool
+ */
 LaravelCFG.prototype.addPathToPool      = function (_path, name, poolpath) {
     // decompose poolpath
     if (poolpath !== '') {
@@ -163,6 +177,13 @@ LaravelCFG.prototype.addPathToPool      = function (_path, name, poolpath) {
     this.saveCFG(function () {});
 
 };
+
+/**
+ * Remove a path element from a pool
+ * @param  {String} pathName name of the path
+ * @param  {String} poolpath path to the pool
+ * @return {void}
+ */
 LaravelCFG.prototype.removePathFromPool = function (pathName, poolpath) {
     poolpath = poolpath.split('/');
 
@@ -178,10 +199,21 @@ LaravelCFG.prototype.removePathFromPool = function (pathName, poolpath) {
 };
 LaravelCFG.prototype.addPoolToPool      = function () {};
 
+/**
+ * Get a pool by her name
+ * @param  {String} name path to the pool
+ * @return {Object}
+ */
 LaravelCFG.prototype.poolByName         = function (name) {
     return _un.getPath(this.cfgObject.pool, name.split('/'));
 };
 
+/**
+ * Get a path by his name with pool name
+ * @param  {String} name path name
+ * @param  {String} pool pool path
+ * @return {Array}
+ */
 LaravelCFG.prototype.pathByName         = function (name, pool) {
     var poolpath;
     if (typeof pool === 'string' && pool === '') {
