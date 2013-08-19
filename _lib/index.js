@@ -197,7 +197,59 @@ LaravelCFG.prototype.removePathFromPool = function (pathName, poolpath) {
         }
     }
 };
-LaravelCFG.prototype.addPoolToPool      = function () {};
+/**
+ * Remove a pool
+ * @param  {String} poolpath
+ * @return {void}
+ */
+LaravelCFG.prototype.removePool = function (poolpath) {
+    poolpath = poolpath.split('/');
+    var last = poolpath[poolpath.length - 1];
+    poolpath.pop();
+
+    var obj = _un.getPath(this.cfgObject.pool, poolpath);
+
+    if (typeof obj !== 'undefined') {
+        delete obj[last];
+        _un.setPath(this.cfgObject.pool, obj, poolpath);
+        this.saveCFG(function () {});
+    }
+};
+/**
+ * Add a pool to another pool
+ * @param {String} pathName     Name of the new pool
+ * @param {String} selectedPool Path to the pool to add
+ * @param {String} poolpath     Path to the destination pool
+ */
+LaravelCFG.prototype.addPoolToPool      = function (pathName, selectedPool, poolpath) {
+    poolpath     = poolpath.split('/');
+    selectedPool = selectedPool.split('/');
+    this.initPool();
+
+    var sourcePool = _un.getPath(this.cfgObject.pool, selectedPool);
+
+    if (typeof sourcePool !== 'undefined') {
+
+        var destination = _un.clone(poolpath);
+
+        destination.push(pathName);
+
+        var destinationPool = _un.getPath(this.cfgObject.pool, destination);
+
+        if (typeof destinationPool === 'undefined') {
+
+            this.cfgObject.pool = _un.setPath(this.cfgObject.pool, sourcePool, destination);
+
+            this.saveCFG(function () {});
+
+        } else {
+            // destinationPool already exist
+        }
+
+    } else {
+        // selectedPool is missing
+    }
+};
 
 /**
  * Get a pool by her name
