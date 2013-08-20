@@ -1,4 +1,3 @@
-/*jshint es5:false, bitwise: true */
 'use strict';
 
 var fs = require('fs'),
@@ -46,6 +45,9 @@ LaravelCFG.prototype.init = function (done) {
 * Read CFG File
 */
 LaravelCFG.prototype.readCFGFile = function (done) {
+    if (typeof done === 'undefined') {
+        done = function () {};
+    }
     var self = this;
     fs.readFile(cfgFile, 'utf8', function (err, buffer) {
         if (err) { throw err; }

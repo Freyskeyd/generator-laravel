@@ -70,15 +70,15 @@ DoctorGenerator.prototype.help = function help() {
  * Control project existance
  * @return nil
  */
-DoctorGenerator.prototype.existance = function existance(){
-
+DoctorGenerator.prototype.existance = function existance() {
+    
 };
 
 /**
  * Run composer diagnose
  * @return nil
  */
-DoctorGenerator.prototype.composerDiagnose = function composerDiagnose(){
+DoctorGenerator.prototype.composerDiagnose = function composerDiagnose() {
 
 };
 
