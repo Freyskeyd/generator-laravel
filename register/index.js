@@ -10,27 +10,25 @@ var util = require('util'),
  */
 _.init();
 
-
-
 var RegisterGenerator = module.exports = function RegisterGenerator(args, options, config) {
     // By calling `NamedBase` here, we get the argument to the subgenerator call
     // as `this.name`.
 
     yeoman.generators.Base.apply(this, arguments);
-    
+
     /**
      * Arguments
      */
     this.argument('pool', { type: String, required : false, defaults: '' });
     this.argument('name', { type: String, required : false, defaults: path.basename(process.cwd())  });
     this.argument('path', { type: String, required : true, defaults: process.cwd() });
-    
+
     if (options.hasOwnProperty('verbose') && options.verbose) {
         this.verbose = true;
     } else {
         this.verbose = false;
     }
-    
+
     this.logging = function (message, needed) {
         if (this.verbose || needed) {
             console.log(message);

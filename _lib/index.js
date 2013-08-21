@@ -4,8 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     _un = require('underscore-contrib'),
     root = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE,
-    cfgFile = path.join(root, '.yolara');
-
+    cfgFile = path.join(root, '.yolara'),
+    cfgFileTest = path.join(root, '.yolaratest');
 
 /**
 * Constructor
