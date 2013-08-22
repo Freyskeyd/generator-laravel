@@ -2,12 +2,12 @@
 'use strict';
 
 var laraCFG = require('../_lib'),
-    assert = require('assert'),
-    _ = new laraCFG();
+    _ = {};
 
 describe('Register path', function () {
 
     beforeEach(function (done) {
+        _ = new laraCFG();
         _.init(done);
     });
 

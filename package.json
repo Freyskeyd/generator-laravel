@@ -20,7 +20,7 @@
     "yeoman-generator": "~0.12.0",
     "rimraf": "~2.1.4",
     "underscore": "~1.5.1",
-    "underscore-contrib": "~0.1.4"
+    "underscore-contrib": "http://github.com/Freyskeyd/underscore-contrib/tarball/master"
   },
   "devDependencies": {
     "mocha": "~1.9.0"

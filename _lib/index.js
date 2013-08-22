@@ -7,6 +7,7 @@ var fs = require('fs'),
     cfgFile = path.join(root, '.yolara'),
     cfgFileTest = path.join(root, '.yolaratest');
 
+
 /**
 * Constructor
 */
