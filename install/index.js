@@ -3,6 +3,7 @@ var util = require('util');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rimraf = require('rimraf');
+var chalk = require('chalk');
 
 var yeoman = require('yeoman-generator');
 
@@ -11,7 +12,6 @@ var InstallGenerator = module.exports = function InstallGenerator(args, options,
     // as `this.name`.
     if (!args.length) { args[0] = './'; }
     yeoman.generators.NamedBase.apply(this, arguments);
-
 
     if (options.hasOwnProperty('verbose') && options.verbose) {
         this.verbose = true;
@@ -46,16 +46,15 @@ util.inherits(InstallGenerator, yeoman.generators.NamedBase);
 InstallGenerator.prototype.help = function help() {
 
     var helpMessage =
-    '\n Usage:' +
-    '\n      yo laravel:install DIRECTORY [options]'.cyan +
-    '\n' +
-    '\n Options:' +
-    '\n     --help    '.cyan + '# Print this message' +
-    '\n     --verbose '.cyan + '# More information\n';
+    chalk.white('\n Usage:') +
+    chalk.cyan('\n      yo laravel:install DIRECTORY [options]') +
+    chalk.white('\n' +
+    '\n Options:') +
+    chalk.cyan('\n     --help    ') + chalk.white('# Print this message') +
+    chalk.cyan('\n     --verbose ') + chalk.white('# More information\n');
 
     return helpMessage;
 };
-
 
 InstallGenerator.prototype.Clean = function clean() {
     var cb = this.async();
@@ -64,7 +63,7 @@ InstallGenerator.prototype.Clean = function clean() {
     var prompts = [{
         name: 'answear',
         type: 'confirm',
-        message: 'Are you sure about cleaning and installing in '.yellow + this.name + '?'.yellow,
+        message: chalk.yellow('Are you sure about cleaning and installing in ') + this.name + chalk.yellow('?'),
         default: 'Y'
     }];
 
