@@ -24,7 +24,8 @@
     "underscore-contrib": "http://github.com/Freyskeyd/underscore-contrib/tarball/master"
   },
   "devDependencies": {
-    "mocha": "~1.9.0"
+    "mocha": "~1.9.0",
+    "should": "~1.2.2"
   },
   "engines": {
     "node": ">=0.8.0"
