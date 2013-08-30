@@ -17,12 +17,12 @@ describe('_lib', function () {
       _.removeCFGFile(done);
     });
 
-    it('should return none empty config object after init', function (done) {
+    it('Should return none empty config object after init', function (done) {
       assert.ok(Object.getOwnPropertyNames(_.getCFG()).length > 0);
       done();
     });
 
-    it('should return a pool containing one path', function (done) {
+    it('Should return a pool containing one path', function (done) {
 
       _.addPathToPool('/usr/www/test', 'testPath', '');
       _.addPathToPool('usr/www/test2', 'testPath', 'test/debug');
@@ -32,19 +32,19 @@ describe('_lib', function () {
       done();
     });
 
-    it('should remove a path containing in a pool', function (done) {
+    it('Should remove a path containing in a pool', function (done) {
       _.removePathFromPool('testPath2', 'test/debug');
       done();
     });
 
-    it('should return a pool named test/debug', function (done) {
+    it('Should return a pool named test/debug', function (done) {
       var pool = _.poolByName('test/debug');
       if (typeof pool === 'object') {
         done();
       }
     });
 
-    it('should return a path named testPath in test/debug pool', function (done) {
+    it('Should return a path named testPath in test/debug pool', function (done) {
       var path = _.pathByName('testPath', 'test/debug');
 
       if (Object.prototype.toString.call(path) === '[object Array]') {
@@ -52,7 +52,7 @@ describe('_lib', function () {
       }
     });
 
-    it('should remove a pool named test/debug', function (done) {
+    it('Should remove a pool named test/debug', function (done) {
       _.removePool('test/debug');
       var pool = _.poolByName('test/debug');
 
@@ -61,7 +61,7 @@ describe('_lib', function () {
       }
     });
 
-    it('should add a pool to another pool', function (done) {
+    it('Should add a pool to another pool', function (done) {
       _.addPathToPool('~/usr/www/test3', 'testPath3', 'test/debug3/price');
       _.addPathToPool('~/usr/www/test4', 'testPath4', 'test/debug3/qty');
 

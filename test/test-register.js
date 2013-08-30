@@ -11,42 +11,42 @@ describe('Register path', function () {
     _.init(done);
   });
 
-  it('should register the current path with directory name in default pool', function (done) {
+  it('Should register the current path with directory name in default pool', function (done) {
 
     done();
   });
 
-  it('should register the current path with directory name in custom pool', function (done) {
+  it('Should register the current path with directory name in custom pool', function (done) {
 
     done();
   });
 
-  it('should register the current path with custom name in default pool', function (done) {
+  it('Should register the current path with custom name in default pool', function (done) {
 
     done();
   });
 
-  it('should register the current path with custom name in custom pool', function (done) {
+  it('Should register the current path with custom name in custom pool', function (done) {
 
     done();
   });
 
-  it('should register a path with directory name in default pool', function (done) {
+  it('Should register a path with directory name in default pool', function (done) {
 
     done();
   });
 
-  it('should register a path with directory name in custom pool', function (done) {
+  it('Should register a path with directory name in custom pool', function (done) {
 
     done();
   });
 
-  it('should register a path with custom name in default pool', function (done) {
+  it('Should register a path with custom name in default pool', function (done) {
 
     done();
   });
 
-  it('should register a path with custom name in custom pool', function (done) {
+  it('Should register a path with custom name in custom pool', function (done) {
 
     done();
   });

@@ -10,17 +10,17 @@ describe('Setup the Yolara CFG', function () {
     _.init(done);
   });
 
-  it('should setup a default configuration with true path', function (done) {
+  it('Should setup a default configuration with true path', function (done) {
 
     done();
   });
 
-  it('should setup a debug configuration with fake path', function (done) {
+  it('Should setup a debug configuration with fake path', function (done) {
 
     done();
   });
 
-  it('should run test with debug mode', function (done) {
+  it('Should run test with debug mode', function (done) {
 
     done();
   });
