@@ -25,6 +25,6 @@ describe('app', function () {
 
   it('Should produce a valid menu', function () {
     var rootMenu = laravel._rootMenuProvider();
-    rootMenu.length.should.equal(3);
+    rootMenu.length.should.equal(2);
   });
 });
