@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "chalk": "~0.2.0",
-    "yeoman-generator": "~0.13.4",
+    "yeoman-generator": "latest",
     "rimraf": "~2.1.4",
     "underscore": "~1.5.1",
     "underscore-contrib": "latest"
