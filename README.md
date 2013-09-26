@@ -11,13 +11,7 @@ A generator for laravel (with Yeoman).
 
 ## Todo
 
-- `yo laravel` => show help
-- `yo laravel:install [DIRECTORY] [OPTIONS]` => install a new laravel setup.
-- `yo laravel:prepare [DIRECTORY] [OPTIONS]` => prepare laravel to deploy
-- `yo laravel:migrate [DIRECTORY] [OPTIONS]` => run migration
-- `yo laravel:down [DIRECTORY] [OPTIONS]`    => run artisan down command
-- `yo laravel:up [DIRECTORY] [OPTIONS]`      => run artisan up command
-
+- `yo laravel` => Starting point
 
 ## License
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
