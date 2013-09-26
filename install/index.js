@@ -70,14 +70,14 @@ InstallGenerator.prototype.Clean = function clean() {
     }
 
     if (props.answear) {
-      this.info('Start cleaning directory ('.cyan + this.name.cyan + ')'.cyan);
+      this.info(chalk.cyan('Start cleaning directory (' + this.name + ')'));
 
       var files = fs.readdirSync(this.name);
       var self = this;
       var iteratorElement = files.length;
 
       if (iteratorElement === 0) {
-        self.info('Cleaning done'.green);
+        self.info(chalk.green('Cleaning done'));
         cb();
       }
 
@@ -87,12 +87,12 @@ InstallGenerator.prototype.Clean = function clean() {
       files.forEach(function (item) {
         rimraf(self.name + item, function () {
           iterator++;
-          self.info(item.yellow + ' Deleted'.red);
-          if (iterator >= iteratorElement) { self.logging('Cleaning done'.green); cb(); }
+          self.info(chalk.yellow(item) + chalk.red(' Deleted'));
+          if (iterator >= iteratorElement) { self.logging(chalk.green('Cleaning done')); cb(); }
         });
       });
     } else {
-      console.log('See ya'.green);
+      console.log(chalk.green('See ya'));
       return false;
     }
   }.bind(this));
@@ -101,18 +101,18 @@ InstallGenerator.prototype.Clean = function clean() {
 InstallGenerator.prototype.checkComposer = function checkComposer() {
   var cb = this.async();
 
-  this.info('Check composer install'.cyan);
+  this.info(chalk.cyan('Check composer install'));
   var composer = spawn('composer'),
       self     = this;
 
   composer.stdout.on('data', function () {
-    self.info('Composer has been found'.green);
+    self.info(chalk.green('Composer has been found'));
     self.composer = true;
     cb();
   });
 
   composer.stderr.on('data', function () {
-    self.conflict('Composer is missing'.red, true);
+    self.conflict(chalk.red('Composer is missing'), true);
     // Composer doesn't exist
   });
   return false;
@@ -125,18 +125,18 @@ InstallGenerator.prototype.installComposer = function installComposer() {
         self = this;
 
     composer.stdout.on('data', function (data) {
-      self.info('composer : '.green + (data.toString().replace(/\n/g, '')));
+      self.info(chalk.green('composer : ') + (data.toString().replace(/\n/g, '')));
     });
 
     composer.stderr.on('data', function (data) {
-      self.conflict('Laravel error '.red + data, true);
+      self.conflict(chalk.red('Laravel error ') + data, true);
       // Composer doesn't exist
     });
     composer.stderr.on('close', function (code) {
       if (!code) {
-        self.info('Laravel installed '.green);
+        self.info(chalk.green('Laravel installed '));
       } else {
-        self.conflict('Laravel error '.red + code);
+        self.conflict(chalk.red('Laravel error ') + code);
       }
     });
   }

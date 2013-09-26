@@ -51,9 +51,6 @@ A generator for Yeoman.
     --rename => rename a Path/pool
     ```
 
-
-
-
 ## License
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 

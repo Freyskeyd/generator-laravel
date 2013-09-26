@@ -85,12 +85,12 @@ LaravelGenerator.prototype._rootMenuProvider = function () {
         method: '_installGenerator'
       }
     },
-    {
-      name: 'Find some help',
-      value: {
-        method: '_findHelp'
-      }
-    },
+    // {
+    //   name: 'Find some help',
+    //   value: {
+    //     method: '_findHelp'
+    //   }
+    // },
     {
       name: 'Get me out of here!',
       value: {
@@ -100,7 +100,9 @@ LaravelGenerator.prototype._rootMenuProvider = function () {
   ];
   return defaultChoices;
 };
-
+LaravelGenerator.prototype._noop = function () {
+  this.log(chalk.green('See ya\n'));
+};
 /**
  * Call the install generator
  */
@@ -122,7 +124,7 @@ LaravelGenerator.prototype._installGenerator = function () {
   this.prompt([{
     name: 'where',
     type: 'prompt',
-    default: '.',
+    default: './',
     message: 'Where to install?',
   }], function (answer) {
     var args = [];
@@ -130,7 +132,7 @@ LaravelGenerator.prototype._installGenerator = function () {
     args.push(answer.where);
 
     env.run(args, {verbose: true}, function () {
-      console.log('called');
+
     });
   }.bind(this));
 };
