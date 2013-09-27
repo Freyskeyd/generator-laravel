@@ -9,9 +9,11 @@ A generator for laravel (with Yeoman).
 - Install the generator: `npm install -g generator-laravel`
 - Run: `yo laravel`
 
-## Todo
-
 - `yo laravel` => Starting point
+
+## Todo
+- Many things...
+
 
 ## License
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
