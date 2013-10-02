@@ -3,7 +3,8 @@
   "version": "0.1.1",
   "description": "A generator for Laravel (with Yeoman)",
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "freyskeyd"
   ],
   "homepage": "https://github.com/Freyskeyd/generator-laravel",
   "bugs": "https://github.com/Freyskeyd/generator-laravel/issues",
