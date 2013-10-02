@@ -1,6 +1,6 @@
 {
   "name": "generator-laravel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A generator for Laravel (with Yeoman)",
   "keywords": [
     "yeoman-generator"
