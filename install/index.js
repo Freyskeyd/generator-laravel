@@ -1,10 +1,12 @@
 'use strict';
-var util = require('util');
-var fs = require('fs');
-var spawn = require('child_process').spawn;
-var rimraf = require('rimraf');
-var chalk = require('chalk');
-var yeoman = require('yeoman-generator');
+var util   = require('util'),
+    fs     = require('fs'),
+    path   = require('path'),
+    spawn  = require('child_process').spawn,
+    rimraf = require('rimraf'),
+    chalk  = require('chalk'),
+    q      = require('Q'),
+    yeoman = require('yeoman-generator');
 
 var InstallGenerator = module.exports = function InstallGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
@@ -41,7 +43,7 @@ var InstallGenerator = module.exports = function InstallGenerator(args, options,
 
 util.inherits(InstallGenerator, yeoman.generators.NamedBase);
 
-InstallGenerator.prototype.help = function help() {
+InstallGenerator.prototype.help = function () {
 
   var helpMessage =
   chalk.white('\n Usage:') +
@@ -54,7 +56,7 @@ InstallGenerator.prototype.help = function help() {
   return helpMessage;
 };
 
-InstallGenerator.prototype.Clean = function clean() {
+InstallGenerator.prototype.Clean = function () {
   var cb = this.async();
 
   var prompts = [{
@@ -77,7 +79,6 @@ InstallGenerator.prototype.Clean = function clean() {
       var iteratorElement = files.length;
 
       if (iteratorElement === 0) {
-        self.info(chalk.green('Cleaning done'));
         cb();
       }
 
@@ -88,7 +89,10 @@ InstallGenerator.prototype.Clean = function clean() {
         rimraf(self.name + item, function () {
           iterator++;
           self.info(chalk.yellow(item) + chalk.red(' Deleted'));
-          if (iterator >= iteratorElement) { self.logging(chalk.green('Cleaning done')); cb(); }
+          if (iterator >= iteratorElement) {
+            self.info(chalk.green('Cleaning done'));
+            cb();
+          }
         });
       });
     } else {
@@ -98,7 +102,7 @@ InstallGenerator.prototype.Clean = function clean() {
   }.bind(this));
 };
 
-InstallGenerator.prototype.checkComposer = function checkComposer() {
+InstallGenerator.prototype.checkComposer = function () {
   var cb = this.async();
 
   this.info(chalk.cyan('Check composer install'));
@@ -118,14 +122,15 @@ InstallGenerator.prototype.checkComposer = function checkComposer() {
   return false;
 };
 
-InstallGenerator.prototype.installComposer = function installComposer() {
+InstallGenerator.prototype.installComposer = function () {
+  var cb = this.async();
 
   if (this.composer) {
     var composer = spawn('composer', ['create-project', 'laravel/laravel', '--prefer-dist', this.name], {killSignal: 'SIGINT'}),
         self = this;
 
     composer.stdout.on('data', function (data) {
-      self.info(chalk.green('composer : ') + (data.toString().replace(/\n/g, '')));
+      self.info(chalk.green('composer: ') + (data.toString().replace(/\n/g, '')));
     });
 
     composer.stderr.on('data', function (data) {
@@ -135,9 +140,149 @@ InstallGenerator.prototype.installComposer = function installComposer() {
     composer.stderr.on('close', function (code) {
       if (!code) {
         self.info(chalk.green('Laravel installed '));
+        cb();
       } else {
         self.conflict(chalk.red('Laravel error ') + code);
       }
     });
   }
+};
+
+InstallGenerator.prototype._configDb = function (envObject, entity, callback) {
+
+  envObject.db[entity] = {};
+    
+  this.prompt([{
+      type: 'input',
+      default: 'localhost',
+      name: 'hostname',
+      message: chalk.yellow('Host for ') + chalk.blue(entity)
+    }, {
+      type: 'input',
+      default: 'database',
+      name: 'database',
+      message: chalk.yellow('database name for ') + chalk.blue(entity)
+    }, {
+      type: 'input',
+      default: 'root',
+      name: 'username',
+      message: chalk.yellow('database username for ') + chalk.blue(entity)
+    }, {
+      type: 'input',
+      default: 'root',
+      name: 'password',
+      message: chalk.yellow('database password for ') + chalk.blue(entity)
+    }], function (responses) {
+      envObject.db[entity] = responses;
+
+      callback();
+    }.bind(this));
+};
+
+InstallGenerator.prototype._defineDb = function (envObject) {
+  var cb = this.async();
+  envObject.db = {};
+  
+  // Define name
+  this.prompt([{
+    type: 'checkbox',
+    name: 'databaseType',
+    choices: ['mysql', 'postgres', 'sqlserver', 'sqlite'],
+    message: chalk.yellow('Check database to configure:')
+  }], function (params) {
+
+    // create an empty promise to begin the chain
+    var promiseChain = q.fcall(function () {});
+
+    // loop through a variable length list
+    // of things to process 
+    params.databaseType.forEach(function (entity) {
+      var promiseLink = function () {
+        var deferred = q.defer();
+        this._configDb(envObject, entity, function () {
+          deferred.resolve();
+        });
+        return deferred.promise;
+      }.bind(this);
+
+      // add the link onto the chain
+      promiseChain = promiseChain.then(promiseLink);
+    }.bind(this));
+    
+
+    // params.databaseType.forEach(function (entity) {
+    //   envObject.db[entity] = {};
+    //   this.prompt([{
+    //     type: 'input',
+    //     name: 'host',
+    //     message: chalk.yellow('Host for ') + chalk.blue(entity)
+    //   }], function (db) {
+    //     envObject.db[entity].host = db.host;
+    //     this.prompt([{
+    //       type: 'input',
+    //       name: 'database',
+    //       message: chalk.yellow('database name for ') + chalk.blue(entity)
+    //     }], function (dbName) {
+    //       envObject.db[entity].database = dbName.database;
+
+    //     }.bind(this));
+    //   }.bind(this));
+    // }.bind(this));
+  }.bind(this));
+};
+
+InstallGenerator.prototype._defineEnv = function () {
+  var cb = this.async(),
+    envObjet = {};
+  var self = this;
+  // Define name
+  this.prompt([{
+    name: 'name',
+    message: chalk.yellow('Enter an Environement name:')
+  }], function (params) {
+    if (params.name === '') {
+      cb();
+      return false;
+    }
+    envObjet.name = params.name;
+    // Create folder in app/config/
+    this.mkdir(this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObjet.name);
+    this.info(chalk.yellow('Config folder') + chalk.green(' created'));
+
+    var pathToEnv = this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObjet.name;
+    this._defineDb(envObjet);
+    // this.template('_database.php', pathToEnv + path.sep + 'database.php');
+    // this.info(chalk.yellow('database file') + chalk.green(' generated'));
+  }.bind(this));
+  
+  // Define
+};
+/**
+ * Define environement
+ */
+InstallGenerator.prototype.defineEnvironnment = function () {
+  var cb = this.async(),
+      self = this;
+
+  var prompts = [{
+    name: 'answear',
+    type: 'confirm',
+    message: chalk.yellow('Define environments ? '),
+    default: 'Y'
+  }];
+
+  this.prompt(prompts, function (needEnvironment) {
+
+    if (!needEnvironment.answear) {
+      cb();
+      return false;
+    }
+    
+    this._defineEnv();
+
+  }.bind(this));
+};
+
+InstallGenerator.prototype.next = function () {
+  this.info('bisous');
 };
