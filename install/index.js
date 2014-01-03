@@ -6,6 +6,7 @@ var util   = require('util'),
     rimraf = require('rimraf'),
     chalk  = require('chalk'),
     q      = require('Q'),
+    _      = require('underscore'),
     yeoman = require('yeoman-generator');
 
 var InstallGenerator = module.exports = function InstallGenerator(args, options, config) {
@@ -182,12 +183,13 @@ InstallGenerator.prototype._configDb = function (envObject, entity, callback) {
 InstallGenerator.prototype._defineDb = function (envObject) {
   var cb = this.async();
   envObject.db = {};
-  
+  var self = this;
   // Define name
   this.prompt([{
     type: 'checkbox',
     name: 'databaseType',
-    choices: ['mysql', 'postgres', 'sqlserver', 'sqlite'],
+    default: 'mysql',
+    choices: ['mysql', 'postgres', 'sqlserver'],
     message: chalk.yellow('Check database to configure:')
   }], function (params) {
 
@@ -208,33 +210,52 @@ InstallGenerator.prototype._defineDb = function (envObject) {
       // add the link onto the chain
       promiseChain = promiseChain.then(promiseLink);
     }.bind(this));
-    
+    promiseChain.then(function () {
+      this.prompt([{
+        type: 'list',
+        name: 'defaultDb',
+        choices: params.databaseType,
+        message: chalk.yellow('default database:')
+      }], function (params2) {
+        var pathToEnv = 'app' + path.sep + 'config' + path.sep + envObject.name + path.sep;
 
-    // params.databaseType.forEach(function (entity) {
-    //   envObject.db[entity] = {};
-    //   this.prompt([{
-    //     type: 'input',
-    //     name: 'host',
-    //     message: chalk.yellow('Host for ') + chalk.blue(entity)
-    //   }], function (db) {
-    //     envObject.db[entity].host = db.host;
-    //     this.prompt([{
-    //       type: 'input',
-    //       name: 'database',
-    //       message: chalk.yellow('database name for ') + chalk.blue(entity)
-    //     }], function (dbName) {
-    //       envObject.db[entity].database = dbName.database;
+        var data = {
+          defaulttype: params2.defaultDb,
+          mysqlhostname: '',
+          mysqldatabase: '',
+          mysqlusername: '',
+          mysqlpassword: '',
+          postgreshostname: '',
+          postgresdatabase: '',
+          postgresusername: '',
+          postgrespassword: '',
+          sqlserverhostname: '',
+          sqlserverdatabase: '',
+          sqlserverusername: '',
+          sqlserverpassword: ''
+        };
+        for (var i in envObject) {
+          if (_.isObject(envObject[i])) {
+            for (var sub in envObject[i]) {
+              if (_.isObject(envObject[i][sub])) {
+                for (var rSub in envObject[i][sub]) {
+                  data[sub + rSub] = envObject[i][sub][rSub];
+                }
+              }
+            }
+          }
+        }
 
-    //     }.bind(this));
-    //   }.bind(this));
-    // }.bind(this));
+        self.template('_database.php', pathToEnv + 'database.php', data);
+        self.defineEnvironnment();
+      });
+    }.bind(this));
   }.bind(this));
 };
 
 InstallGenerator.prototype._defineEnv = function () {
   var cb = this.async(),
-    envObjet = {};
-  var self = this;
+    envObject = {};
   // Define name
   this.prompt([{
     name: 'name',
@@ -244,19 +265,20 @@ InstallGenerator.prototype._defineEnv = function () {
       cb();
       return false;
     }
-    envObjet.name = params.name;
+    envObject.name = params.name;
     // Create folder in app/config/
-    this.mkdir(this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObjet.name);
+    this.mkdir(this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObject.name);
     this.info(chalk.yellow('Config folder') + chalk.green(' created'));
 
-    var pathToEnv = this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObjet.name;
-    this._defineDb(envObjet);
+    
+    this._defineDb(envObject);
     // this.template('_database.php', pathToEnv + path.sep + 'database.php');
     // this.info(chalk.yellow('database file') + chalk.green(' generated'));
   }.bind(this));
   
   // Define
 };
+
 /**
  * Define environement
  */
