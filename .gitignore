@@ -3,3 +3,4 @@ temp/
 npm-debug.log
 .yolara
 readme.html
+coverage/

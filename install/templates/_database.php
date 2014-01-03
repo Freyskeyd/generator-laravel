@@ -1,7 +1,6 @@
 <?php
-
 return array(
-  'default' => 'mysql',
+  'default' => '<%= defaulttype %>',
 
   /*
   |--------------------------------------------------------------------------
@@ -18,7 +17,6 @@ return array(
   | choice installed on your machine before you begin development.
   |
   */
-
   'connections' => array(
 
     'sqlite' => array(
@@ -29,10 +27,10 @@ return array(
 
     'mysql' => array(
       'driver'    => 'mysql',
-      'host'      => 'localhost',
-      'database'  => 'database',
-      'username'  => 'root',
-      'password'  => '',
+      'host'      => '<%= mysqlhostname %>',
+      'database'  => '<%= mysqldatabase %>',
+      'username'  => '<%= mysqlusername %>',
+      'password'  => '<%= mysqlpassword %>',
       'charset'   => 'utf8',
       'collation' => 'utf8_unicode_ci',
       'prefix'    => '',
@@ -40,10 +38,10 @@ return array(
 
     'pgsql' => array(
       'driver'   => 'pgsql',
-      'host'     => 'localhost',
-      'database' => 'database',
-      'username' => 'root',
-      'password' => '',
+      'host'     => '<%= postgreshostname %>',
+      'database' => '<%= postgresdatabase %>',
+      'username' => '<%= postgresusername %>',
+      'password' => '<%= postgrespassword %>',
       'charset'  => 'utf8',
       'prefix'   => '',
       'schema'   => 'public',
@@ -51,10 +49,10 @@ return array(
 
     'sqlsrv' => array(
       'driver'   => 'sqlsrv',
-      'host'     => 'localhost',
-      'database' => 'database',
-      'username' => 'root',
-      'password' => '',
+      'host'     => '<%= sqlserverhostname %>',
+      'database' => '<%= sqlserverdatabase %>',
+      'username' => '<%= sqlserverusername %>',
+      'password' => '<%= sqlserverpassword %>',
       'prefix'   => '',
     )
   )
