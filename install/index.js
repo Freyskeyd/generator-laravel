@@ -188,7 +188,7 @@ InstallGenerator.prototype._defineDb = function (envObject) {
   this.prompt([{
     type: 'checkbox',
     name: 'databaseType',
-    default: 'mysql',
+    default: ['mysql'],
     choices: ['mysql', 'postgres', 'sqlserver'],
     message: chalk.yellow('Check database to configure:')
   }], function (params) {
