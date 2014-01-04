@@ -11,6 +11,15 @@ A generator for laravel (with Yeoman).
 
 - `yo laravel` => Starting point
 
+### You can
+
+- Install laravel in current folder or any folder
+- You can define multiple database configuration with environment
+
+### Known Issues
+
+- Windows Err with composer #1
+
 ## Todo
 - Many things...
 
