@@ -5,7 +5,7 @@ var util   = require('util'),
     spawn  = require('child_process').spawn,
     rimraf = require('rimraf'),
     chalk  = require('chalk'),
-    q      = require('Q'),
+    q      = require('q'),
     _      = require('underscore'),
     yeoman = require('yeoman-generator');
 
@@ -188,7 +188,11 @@ InstallGenerator.prototype._defineDb = function (envObject) {
   this.prompt([{
     type: 'checkbox',
     name: 'databaseType',
+<<<<<<< HEAD
     default: 'mysql',
+=======
+    default: ['mysql'],
+>>>>>>> master
     choices: ['mysql', 'postgres', 'sqlserver'],
     message: chalk.yellow('Check database to configure:')
   }], function (params) {
