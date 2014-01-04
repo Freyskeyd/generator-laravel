@@ -18,7 +18,7 @@ A generator for laravel (with Yeoman).
 
 ### Known Issues
 
-- Windows Err with composer #1
+- Windows Err with composer [#1](https://github.com/Freyskeyd/generator-laravel/issues/1)
 
 ## Todo
 - Many things...
