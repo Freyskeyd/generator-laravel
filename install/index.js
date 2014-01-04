@@ -5,7 +5,7 @@ var util   = require('util'),
     spawn  = require('child_process').spawn,
     rimraf = require('rimraf'),
     chalk  = require('chalk'),
-    q      = require('Q'),
+    q      = require('q'),
     _      = require('underscore'),
     yeoman = require('yeoman-generator');
 
