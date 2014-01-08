@@ -166,7 +166,7 @@ LaravelCFG.prototype.addPathToPool      = function (_path, name, poolpath) {
 
   // if unix keep first /
   if (this.unix) {
-    _path[0] = (_path[0] !== '' ? _path[0] : _path[0] = path.sep);
+    _path[0] = (_path[0] !== '' ? _path[0] : path.sep);
     if (_path[0] !== path.sep) {
 
       var sub = process.cwd().split(path.sep);

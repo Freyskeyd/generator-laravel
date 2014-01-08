@@ -9,7 +9,7 @@ var util   = require('util'),
     _      = require('underscore'),
     yeoman = require('yeoman-generator');
 
-var InstallGenerator = module.exports = function InstallGenerator(args, options, config) {
+var InstallGenerator = module.exports = function InstallGenerator(args, options) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
   // as `this.name`.
   if (!args.length) { args[0] = './'; }
@@ -20,7 +20,7 @@ var InstallGenerator = module.exports = function InstallGenerator(args, options,
   } else {
     this.verbose = false;
   }
-
+  this.unix = process.platform !== 'win32';
   // TODO :: check last char is /
   this.destinationRoot(this.name);
   this.composer = false;
@@ -73,29 +73,34 @@ InstallGenerator.prototype.Clean = function () {
     }
 
     if (props.answear) {
-      this.info(chalk.cyan('Start cleaning directory (' + this.name + ')'));
+      this.info(chalk.cyan('Start cleaning directory (' + process.cwd() + ')'));
 
-      var files = fs.readdirSync(this.name);
-      var self = this;
-      var iteratorElement = files.length;
-
-      if (iteratorElement === 0) {
-        cb();
-      }
-
-      var iterator = 0;
-
-
-      files.forEach(function (item) {
-        rimraf(self.name + item, function () {
-          iterator++;
-          self.info(chalk.yellow(item) + chalk.red(' Deleted'));
-          if (iterator >= iteratorElement) {
-            self.info(chalk.green('Cleaning done'));
-            cb();
-          }
+      if (!fs.existsSync(process.cwd())) {
+        fs.mkdir(process.cwd(), '0755', function () {
+          cb();
         });
-      });
+      } else {
+        var files = fs.readdirSync(process.cwd());
+        var self = this;
+        var iteratorElement = files.length;
+
+        if (iteratorElement === 0) {
+          cb();
+        }
+
+        var iterator = 0;
+
+        files.forEach(function (item) {
+          rimraf(process.cwd() + path.sep + item, function () {
+            iterator++;
+            self.info(chalk.yellow(item) + chalk.red(' Deleted'));
+            if (iterator >= iteratorElement) {
+              self.info(chalk.green('Cleaning done'));
+              cb();
+            }
+          });
+        });
+      }
     } else {
       console.log(chalk.green('See ya'));
       return false;
@@ -127,7 +132,8 @@ InstallGenerator.prototype.installComposer = function () {
   var cb = this.async();
 
   if (this.composer) {
-    var composer = spawn('composer', ['create-project', 'laravel/laravel', '--prefer-dist', this.name], {killSignal: 'SIGINT'}),
+
+    var composer = spawn('composer', ['create-project', 'laravel/laravel', '--prefer-dist', process.cwd()], {killSignal: 'SIGINT'}),
         self = this;
 
     composer.stdout.on('data', function (data) {
@@ -306,5 +312,5 @@ InstallGenerator.prototype.defineEnvironnment = function () {
 };
 
 InstallGenerator.prototype.next = function () {
-  this.info('bisous');
+  this.info('All done! Bisous');
 };
