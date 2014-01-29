@@ -120,9 +120,10 @@ InstallGenerator.prototype.checkComposer = function () {
     self.composer = true;
     cb();
   });
-
+  composer.on('error', function() { 
+  });
   composer.stderr.on('data', function () {
-    self.conflict(chalk.red('Composer is missing'), true);
+    self.conflict(chalk.red('Composer is missing you need to install composer globaly'), true);
     // Composer doesn't exist
   });
   return false;
