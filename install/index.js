@@ -112,7 +112,7 @@ InstallGenerator.prototype.checkComposer = function () {
   var cb = this.async();
 
   this.info(chalk.cyan('Check composer install'));
-  var composer = spawn('composer'),
+  var composer = spawn('cmd', ['/c', 'composer']),
       self     = this;
 
   composer.stdout.on('data', function () {
@@ -133,7 +133,7 @@ InstallGenerator.prototype.installComposer = function () {
 
   if (this.composer) {
 
-    var composer = spawn('composer', ['create-project', 'laravel/laravel', '--prefer-dist', process.cwd()], {killSignal: 'SIGINT'}),
+    var composer = spawn('cmd', ['/c', 'composer', 'create-project', 'laravel/laravel', '--prefer-dist', process.cwd()], {killSignal: 'SIGINT'}),
         self = this;
 
     composer.stdout.on('data', function (data) {
@@ -158,7 +158,7 @@ InstallGenerator.prototype.installComposer = function () {
 InstallGenerator.prototype._configDb = function (envObject, entity, callback) {
 
   envObject.db[entity] = {};
-    
+
   this.prompt([{
       type: 'input',
       default: 'localhost',
@@ -203,7 +203,7 @@ InstallGenerator.prototype._defineDb = function (envObject) {
     var promiseChain = q.fcall(function () {});
 
     // loop through a variable length list
-    // of things to process 
+    // of things to process
     params.databaseType.forEach(function (entity) {
       var promiseLink = function () {
         var deferred = q.defer();
@@ -276,12 +276,12 @@ InstallGenerator.prototype._defineEnv = function () {
     this.mkdir(this.name + path.sep + 'app' + path.sep + 'config' + path.sep + envObject.name);
     this.info(chalk.yellow('Config folder') + chalk.green(' created'));
 
-    
+
     this._defineDb(envObject);
     // this.template('_database.php', pathToEnv + path.sep + 'database.php');
     // this.info(chalk.yellow('database file') + chalk.green(' generated'));
   }.bind(this));
-  
+
   // Define
 };
 
@@ -305,7 +305,7 @@ InstallGenerator.prototype.defineEnvironnment = function () {
       cb();
       return false;
     }
-    
+
     this._defineEnv();
 
   }.bind(this));
