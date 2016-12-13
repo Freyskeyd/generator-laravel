@@ -1,5 +1,10 @@
 ### DEPRECATED
 
+# THIS REPOSITORY NEED A NEW MAINTAINER
+
+I don't use atom for a while... like 2years and i don't have time to maintain this repository.
+If someone wants to be involved, just drop me an email.
+
 # Generator-laravel
 [![Build Status](https://secure.travis-ci.org/Freyskeyd/generator-laravel.png?branch=unstable)](https://travis-ci.org/Freyskeyd/generator-laravel)
 
